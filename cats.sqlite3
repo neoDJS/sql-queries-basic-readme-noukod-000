@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+
+import sqlite3
+
+# create database connection here
+connection = sqlite3.connect('pets_database.db')
+cursor = connection.cursor()
+
+    # create table here
+    cursor.execute('''CREATE TABLE cats ( id INTEGER PRIMARY KEY, name TEXT, age INTEGER, breed TEXT, owner_id INTEGER );''')
+
+
+    # insert data here
+    cursor.execute('''INSERT INTO cats (name, age, breed, owner_id) VALUES ("Maru", 3 , "Scottish Fold", 1);''')
+    cursor.execute('''INSERT INTO cats (name, age, breed, owner_id) VALUES ("Hana", 1 , "Tabby", 1);''')
+    cursor.execute('''INSERT INTO cats (name, age, breed) VALUES ("Lil\' Bub", 5, "American Shorthair");''')
+    cursor.execute('''INSERT INTO cats (name, age, breed) VALUES ("Moe", 10, "Tabby");''')
+    cursor.execute('''INSERT INTO cats (name, age, breed) VALUES ("Patches", 2, "Calico");''')
+
+    # select all data from cats data here
+    cursor.execute('''SELECT * FROM cats;''').fetchall()
+
+
+    # select all cats order by age here
+    cursor.execute('''SELECT * FROM cats ORDER BY age;''').fetchall()
+
+    # select cats order by age descending here
+    cursor.execute('''SELECT * FROM cats ORDER BY age DESC;''').fetchall()
+
+    # select the two oldest cats here
+    cursor.execute('''SELECT * FROM cats ORDER BY age DESC LIMIT 2;''').fetchone()
+
+    # find all records between ages 1 and three here
+    cursor.execute('''SELECT name FROM cats WHERE age BETWEEN 1 AND 3;''').fetchone()
+
+    # insert new record here
+    # retrieve all records from the cat table here
+    cursor.execute('''INSERT INTO cats (name, age, breed) VALUES (NULL, NULL, "Tabby");''')
+    cursor.execute('''SELECT * FROM cats;''').fetchall()
+
+
+    # select cats where the name field is null here
+    cursor.execute('''SELECT * FROM cats WHERE name IS NULL;''').fetchall()
+
+
+    # retrieve the count of cats whose owner id = 1 here
+    cursor.execute('''SELECT COUNT(owner_id) FROM cats WHERE owner_id = 1;''').fetchall()
+
+
+    # execute GROUP BY sql statement here
+    cursor.execute('''SELECT breed, COUNT(breed) FROM cats GROUP BY breed;''').fetchall()
+
+
+    # execute multiple column group by statement here
+    cursor.execute('''SELECT breed, owner_id, COUNT(breed) FROM cats GROUP BY breed, owner_id;''').fetchall()
